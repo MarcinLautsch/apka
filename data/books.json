@@ -1,0 +1,18 @@
+{
+	"books": [
+		{
+			"title": "Harry Potter i kamień filozoficzny",
+			"category": "Fantasy",
+			"author": "J.K. Rowling",
+			"year": 1992,
+			"price": 49.99
+		},
+		{
+			"title": "God father",
+			"category": "Crime",
+			"author": "Mario Puzo",
+			"year": 1960,
+			"price": 59.99
+		}
+	]
+}

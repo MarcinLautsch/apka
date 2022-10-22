@@ -1,19 +1,21 @@
-const booksFromLocalDatabase = [
-	{
-		title: 'Harry Potter i kamień filozoficzny',
-		category: 'Fantasy',
-		author: 'J.K. Rowling',
-		year: 1992,
-		price: 49.99,
-	},
-	{
-		title: 'God father',
-		category: 'Crime',
-		author: 'Mario Puzo',
-		year: 1960,
-		price: 59.99,
-	},
-]
+import { v4 as uuidv4 } from 'uuid'
+
+// const booksFromLocalDatabase = [
+// 	{
+// 		title: 'Harry Potter i kamień filozoficzny',
+// 		category: 'Fantasy',
+// 		author: 'J.K. Rowling',
+// 		year: 1992,
+// 		price: 49.99,
+// 	},
+// 	{
+// 		title: 'God father',
+// 		category: 'Crime',
+// 		author: 'Mario Puzo',
+// 		year: 1960,
+// 		price: 59.99,
+// 	},
+// ]
 
 // let bookLibrary = JSON.parse(localStorage.getItem('books'));
 
@@ -23,7 +25,7 @@ const booksFromLocalDatabase = [
 
 // Forma skrocona przy uzyciu operatora ??
 
-const bookLibrary = JSON.parse(localStorage.getItem('books')) ?? booksFromLocalDatabase
+const bookLibrary = JSON.parse(localStorage.getItem('books')) ?? []
 
 const booksList = document.querySelector('#list')
 const booksForm = document.querySelector('#booksForm')
@@ -77,6 +79,7 @@ const addBook = event => {
 	event.preventDefault()
 
 	const newBook = {
+		id: uuidv4(),
 		title: addBookTitleInput.value,
 		category: addBookCategoryInput.value,
 		author: addBookAuthorInput.value,
