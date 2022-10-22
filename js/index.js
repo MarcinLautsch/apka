@@ -1,12 +1,16 @@
 import { v4 as uuidv4 } from 'uuid'
+import { post } from '../helpers/http.js'
 
 let bookLibrary = []
+
+const URLS = {
+	books: 'http://localhost:3000/books',
+}
 
 const booksList = document.querySelector('#list')
 
 const fetchBooks = () => {
-	// fetch
-	fetch('http://localhost:3000/books')
+	fetch(URLS.books)
 		.then(response => {
 			return response.json()
 		})
@@ -17,6 +21,13 @@ const fetchBooks = () => {
 		.catch(error => {
 			console.log(error.message)
 		})
+}
+
+const postBook = newBook => {
+	post(URLS.books, newBook).then(() => {
+		bookLibrary.push(newBook)
+		renderBooks(bookLibrary)
+	})
 }
 
 const booksForm = document.querySelector('#booksForm')
@@ -67,9 +78,7 @@ const addBook = event => {
 		price: addBookPriceInput.value,
 	}
 
-	bookLibrary.push(newBook)
-	localStorage.setItem('books', JSON.stringify(bookLibrary))
-	renderBooks(bookLibrary)
+	postBook(newBook)
 
 	addBookTitleInput.value = ''
 	addBookCategoryInput.value = ''
