@@ -1,52 +1,32 @@
 import { v4 as uuidv4 } from 'uuid'
 
-// const booksFromLocalDatabase = [
-// 	{
-// 		title: 'Harry Potter i kamień filozoficzny',
-// 		category: 'Fantasy',
-// 		author: 'J.K. Rowling',
-// 		year: 1992,
-// 		price: 49.99,
-// 	},
-// 	{
-// 		title: 'God father',
-// 		category: 'Crime',
-// 		author: 'Mario Puzo',
-// 		year: 1960,
-// 		price: 59.99,
-// 	},
-// ]
-
-// let bookLibrary = JSON.parse(localStorage.getItem('books'));
-
-// if(!bookLibrary) {
-//   bookLibrary = booksFromLocalDatabase
-// }
-
-// Forma skrocona przy uzyciu operatora ??
-
-const bookLibrary = JSON.parse(localStorage.getItem('books')) ?? []
+let bookLibrary = []
 
 const booksList = document.querySelector('#list')
+
+const fetchBooks = () => {
+	// fetch
+	fetch('http://localhost:3000/books')
+		.then(response => {
+			return response.json()
+		})
+		.then(data => {
+			bookLibrary = data
+			renderBooks(bookLibrary)
+		})
+		.catch(error => {
+			console.log(error.message)
+		})
+}
+
 const booksForm = document.querySelector('#booksForm')
 const searchInput = document.querySelector('#searchInput')
 const addBookForm = document.querySelector('#addBookForm')
-
 const addBookTitleInput = document.querySelector('#newBookTitle')
 const addBookCategoryInput = document.querySelector('#newBookCategory')
 const addBookYearInput = document.querySelector('#newBookYear')
 const addBookAuthorInput = document.querySelector('#newBookAuthor')
 const addBookPriceInput = document.querySelector('#newBookPrice')
-
-// * Destrukcja obiektow
-// books.forEach(({ title, category  }) => {
-//   booksList.innerHTML += `
-//     <li>
-//       <h2>${title}</h2>
-//       <p>Kategoria: ${category}</p>
-//     </li>
-//   `
-// })
 
 const renderBooks = books => {
 	booksList.innerHTML = ''
@@ -98,6 +78,6 @@ const addBook = event => {
 	addBookPriceInput.value = ''
 }
 
-renderBooks(bookLibrary)
+fetchBooks()
 booksForm.addEventListener('submit', filterBook)
 addBookForm.addEventListener('submit', addBook)
