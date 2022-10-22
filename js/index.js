@@ -1,35 +1,8 @@
 import { v4 as uuidv4 } from 'uuid'
-import { post } from '../helpers/http.js'
-
-let bookLibrary = []
-
-const URLS = {
-	books: 'http://localhost:3000/books',
-}
+import { get, post } from '../helpers/http'
+import URLS from '../helpers/urls'
 
 const booksList = document.querySelector('#list')
-
-const fetchBooks = () => {
-	fetch(URLS.books)
-		.then(response => {
-			return response.json()
-		})
-		.then(data => {
-			bookLibrary = data
-			renderBooks(bookLibrary)
-		})
-		.catch(error => {
-			console.log(error.message)
-		})
-}
-
-const postBook = newBook => {
-	post(URLS.books, newBook).then(() => {
-		bookLibrary.push(newBook)
-		renderBooks(bookLibrary)
-	})
-}
-
 const booksForm = document.querySelector('#booksForm')
 const searchInput = document.querySelector('#searchInput')
 const addBookForm = document.querySelector('#addBookForm')
@@ -39,19 +12,35 @@ const addBookYearInput = document.querySelector('#newBookYear')
 const addBookAuthorInput = document.querySelector('#newBookAuthor')
 const addBookPriceInput = document.querySelector('#newBookPrice')
 
+let bookLibrary = []
+
+const fetchBooks = () => {
+	get(URLS.books).then(data => {
+		bookLibrary = data
+		renderBooks(data)
+	})
+}
+
+const postBook = newBook => {
+	post(URLS.books, newBook).then(() => {
+		bookLibrary.push(newBook)
+		renderBooks(bookLibrary)
+	})
+}
+
 const renderBooks = books => {
 	booksList.innerHTML = ''
 
 	books.forEach(book => {
 		booksList.innerHTML += `
-        <li>
-          <h2>${book.title}</h2>
-          <p>Kategoria: ${book.category}</p>
-          <p>Autor: ${book.author}</p>
-          <p>Rok Wydania: ${book.year}</p>
-          <p>Cena: ${book.price}zł</p>
-        </li>
-      `
+      <li>
+        <h2>${book.title}</h2>
+        <p>Kategoria: ${book.category}</p>
+        <p>Autor: ${book.author}</p>
+        <p>Rok Wydania: ${book.year}</p>
+        <p>Cena: ${book.price}zł</p>
+      </li>
+    `
 	})
 }
 

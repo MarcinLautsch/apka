@@ -7,3 +7,13 @@ export const post = (url, data) => {
 		body: JSON.stringify(data),
 	}).then(res => res.json())
 }
+
+export const get = url => {
+	return fetch(url)
+		.then(response => {
+			return response.json()
+		})
+		.catch(error => {
+			console.log(error.message)
+		})
+}
